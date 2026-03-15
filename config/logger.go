@@ -2,20 +2,36 @@ package config
 
 import (
 	"fmt"
+	"os"
 )
 
 type Logger interface {
-	Write(s string)
-	Writeln(s string)
+	Write(s string, args ...any) (error)
+	Writeln(s string, args ...any) (error)
+	Errwrite(s string, args ...any) (error)
+	Errwriteln(s string, args ...any) (error)
 }
 
-type StdoutLogger struct {}
+type StdLogger struct {}
 
-func (ml *StdoutLogger) Write(s string) (error) {
-	fmt.Printf(s)
+func (ml *StdLogger) Write(s string, args ...any) (error) {
+	fmt.Fprintf(os.Stdout, s, args...)
 	return nil
 }
 
-func (ml *StdoutLogger) Writeln(s string) (error) {
+func (ml *StdLogger) Writeln(s string, args ...any) (error) {
+	fmt.Fprintf(os.Stdout, s, args...)
+	fmt.Fprintf(os.Stdout, "\n")
+	return nil
+}
+
+func (ml *StdLogger) Errwrite(s string, args ...any) (error) {
+	fmt.Fprintf(os.Stderr, s, args...)
+	return nil
+}
+
+func (ml *StdLogger) Errwriteln(s string, args ...any) (error) {
+	fmt.Fprintf(os.Stderr, s, args...)
+	fmt.Fprintf(os.Stderr, "\n")
 	return nil
 }

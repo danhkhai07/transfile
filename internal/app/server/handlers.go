@@ -3,18 +3,18 @@ package app
 import "net/http"
 
 // GET /health
-func getHealth() func(http.ResponseWriter, *http.Request) {
-	return nil
+func (svr *Server) getHealth(http.ResponseWriter, *http.Request) {
+
 }
 
 // GET /lookup/{hash}
-func lookupFile() func(http.ResponseWriter, *http.Request) {
-	return nil
+func (svr *Server) lookupFile(http.ResponseWriter, *http.Request) {
+
 }
 
 // GET /download/{hash}
-func downloadFile() func(http.ResponseWriter, *http.Request) {
-	return nil
+func (svr *Server) downloadFile(http.ResponseWriter, *http.Request) {
+
 }
 
 // POST /upload
@@ -25,6 +25,6 @@ func downloadFile() func(http.ResponseWriter, *http.Request) {
 // 	size: 734003200
 // 	
 // }
-func postFile() func(http.ResponseWriter, *http.Request) {
-	return nil
+func (svr *Server) postFile(http.ResponseWriter, *http.Request) {
+
 }

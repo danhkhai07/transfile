@@ -83,12 +83,13 @@ func NewServer(
 }
 
 func NewHandler(
-	server *Server,
+	svr *Server,
 	cfg *config.Config,
 	logger Logger,
 ) (http.Handler) {
 	mux := http.NewServeMux()
 	addRoutes(
+		svr,
 		mux,
 		cfg,	
 		logger,

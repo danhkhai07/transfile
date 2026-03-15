@@ -7,12 +7,13 @@ import (
 )
 
 func addRoutes(
+	svr *Server,
 	mux *http.ServeMux,
 	cfg *config.Config,
 	logger Logger,
 ) {
-	mux.HandleFunc("GET /health", 			getHealth())
-	mux.HandleFunc("GET /lookup/{hash}", 	lookupFile())
-	mux.HandleFunc("GET /download/{hash}", 	downloadFile())
-	mux.HandleFunc("POST /upload", 			postFile())
+	mux.HandleFunc("GET /health", 			svr.getHealth)
+	mux.HandleFunc("GET /lookup/{hash}", 	svr.lookupFile)
+	mux.HandleFunc("GET /download/{hash}", 	svr.downloadFile)
+	mux.HandleFunc("POST /upload", 			svr.postFile)
 }

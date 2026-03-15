@@ -1,7 +1,7 @@
 package main
 
 import (
-	"transfile/internal/api"
+	"transfile/internal/app"
 )
 
 func main() {

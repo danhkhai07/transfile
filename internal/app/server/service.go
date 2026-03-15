@@ -16,9 +16,10 @@ type Server struct {
 	addr string
 	logger Logger
 	httpServer *http.Server
+	aliveAt time.Time
 }
 
-func (server *Server) Run(
+func (svr *Server) Run(
 	ctx context.Context,
 	args []string,
 	getenv func(string) string,
@@ -33,10 +34,11 @@ func (server *Server) Run(
 
 
 	go func() {
-		server.logger.Writeln("listening on %s", server.addr)
-		err := server.httpServer.ListenAndServe()
+		svr.logger.Writeln("listening on %s", svr.addr)
+		svr.aliveAt = time.Now()
+		err := svr.httpServer.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
-			server.logger.Errwriteln("error listen and serve: %s", err)
+			svr.logger.Errwriteln("error listen and serve: %s", err)
 			return
 		}
 	}()
@@ -50,9 +52,9 @@ func (server *Server) Run(
 		shutdownCtx, shutdownCancel := context.WithTimeout(shutdownCtx, 10 * time.Second)
 		defer shutdownCancel()
 
-		server.logger.Writeln("server shutting down...")
-		if err := server.httpServer.Shutdown(shutdownCtx); err != nil {
-			server.logger.Errwriteln("error shutting down http server: %s", err)
+		svr.logger.Writeln("server shutting down...")
+		if err := svr.httpServer.Shutdown(shutdownCtx); err != nil {
+			svr.logger.Errwriteln("error shutting down http server: %s", err)
 			return
 		}
 	}()
@@ -65,21 +67,21 @@ func NewServer(
 	cfg *config.Config,
 	logger Logger,
 ) (*Server) {
-	server := Server{
+	svr := Server{
 		addr: net.JoinHostPort("0.0.0.0", cfg.Port),
 		logger: logger,
 		httpServer: &http.Server{},
 	}
-	server.httpServer.Addr = server.addr
+	svr.httpServer.Addr = svr.addr
 
 	handler := NewHandler(
-		&server,
+		&svr,
 		cfg,
 		logger,
 	)
-	server.httpServer.Handler = handler
+	svr.httpServer.Handler = handler
 
-	return &server
+	return &svr
 }
 
 func NewHandler(
@@ -100,3 +102,6 @@ func NewHandler(
 	return handler
 }
 
+func (svr *Server) Uptime() int {
+	return int(time.Now().Unix()) - int(svr.aliveAt.Unix())
+}

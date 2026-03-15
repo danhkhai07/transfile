@@ -7,9 +7,17 @@ import (
 
 // GET /health
 func (svr *Server) getHealth(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 
+	resp := getHealthResponse{
+		Status: "ok",
+		Uptime: svr.Uptime(),
+	}
 
-	if err != json.NewEncoder(w).Encode()
+	if err := json.NewEncoder(w).Encode(resp); err != nil {
+		svr.logger.Errwriteln("json parsing error: %s", err)
+	}
 }
 
 // GET /lookup/{hash}

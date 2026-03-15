@@ -85,7 +85,7 @@ func NewServer(
 func NewHandler(
 	server *Server,
 	cfg *config.Config,
-	logger config.Logger,
+	logger Logger,
 ) (http.Handler) {
 	mux := http.NewServeMux()
 	addRoutes(

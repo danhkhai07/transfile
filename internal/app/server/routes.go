@@ -9,7 +9,7 @@ import (
 func addRoutes(
 	mux *http.ServeMux,
 	cfg *config.Config,
-	logger config.Logger,
+	logger Logger,
 ) {
 	mux.Handle("/", mockHome())
 }

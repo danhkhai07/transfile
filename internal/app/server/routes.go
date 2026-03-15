@@ -11,13 +11,8 @@ func addRoutes(
 	cfg *config.Config,
 	logger Logger,
 ) {
-	mux.Handle("/", mockHome())
-}
-
-func mockHome() http.Handler {
-	return http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("Hello world!"))
-		},
-	)
+	mux.HandleFunc("GET /health", 			getHealth())
+	mux.HandleFunc("GET /lookup/{hash}", 	lookupFile())
+	mux.HandleFunc("GET /download/{hash}", 	downloadFile())
+	mux.HandleFunc("POST /upload", 			postFile())
 }

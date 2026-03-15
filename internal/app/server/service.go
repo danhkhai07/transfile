@@ -63,7 +63,7 @@ func (server *Server) Run(
 
 func NewServer(
 	cfg *config.Config,
-	logger config.Logger,
+	logger Logger,
 ) (*Server) {
 	server := Server{
 		addr: net.JoinHostPort("0.0.0.0", cfg.Port),

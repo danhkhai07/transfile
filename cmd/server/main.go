@@ -1,10 +1,25 @@
-package server
+package main
 
 import (
-	"github.com/danhkhai07/transfile/app"
+	"context"
+	"os"
+
+	"transfile/config"
+	"transfile/internal/app"
 )
 
 func main() {
-	server := app.Server{}
-	server.Run()
+	cfg := config.Config{
+		Port: "8080",
+	}
+	logger := config.StdLogger{}
+
+	ctx := context.Background()
+	server := app.NewServer(
+		&cfg,
+		&logger,
+	)
+	if err := server.Run(ctx, os.Args, os.Getenv); err != nil {
+		os.Exit(1)
+	}
 }

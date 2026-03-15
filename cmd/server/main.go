@@ -15,7 +15,7 @@ func main() {
 	logger := config.StdLogger{}
 
 	ctx := context.Background()
-	server := app.NewServer(
+	server := server.NewServer(
 		&cfg,
 		&logger,
 	)

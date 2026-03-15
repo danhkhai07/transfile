@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	client := app.Client{}
+	client := client.Client{}
 	client.Run()
 }
 

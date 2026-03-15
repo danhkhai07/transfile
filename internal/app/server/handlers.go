@@ -1,12 +1,15 @@
-package app
+package server
 
 import (
+	"encoding/json"
 	"net/http"
 )
 
 // GET /health
 func (svr *Server) getHealth(w http.ResponseWriter, r *http.Request) {
 
+
+	if err != json.NewEncoder(w).Encode()
 }
 
 // GET /lookup/{hash}

@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"transfile/config"
-	"transfile/internal/app"
+	"transfile/internal/app/server"
 )
 
 func main() {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"transfile/internal/app"
+	"transfile/internal/app/client"
 )
 
 func main() {

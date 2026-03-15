@@ -14,7 +14,7 @@ import (
 
 type Server struct {
 	addr string
-	logger config.Logger
+	logger Logger
 	httpServer *http.Server
 }
 

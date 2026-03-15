@@ -1,3 +1,3 @@
-module github.com/danhkhai07/transfile
+module transfile
 
 go 1.25.6

@@ -1,7 +1,7 @@
-package server
+package main
 
 import (
-	"github.com/danhkhai07/transfile/app"
+	"transfile/internal/api"
 )
 
 func main() {

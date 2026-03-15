@@ -3,7 +3,7 @@ package app
 import (
 	"net/http"
 
-	"github.com/danhkhai07/transfile/config"
+	"transfile/config"
 )
 
 func addRoutes(
@@ -11,5 +11,13 @@ func addRoutes(
 	cfg *config.Config,
 	logger config.Logger,
 ) {
-	mux.Handle("/", )
+	mux.Handle("/", mockHome())
+}
+
+func mockHome() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("Hello world!"))
+		},
+	)
 }

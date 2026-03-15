@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/danhkhai07/transfile/config"
+	"transfile/config"
 )
 
 type Server struct {

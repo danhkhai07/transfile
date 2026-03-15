@@ -5,13 +5,6 @@ import (
 	"os"
 )
 
-type Logger interface {
-	Write(s string, args ...any) (error)
-	Writeln(s string, args ...any) (error)
-	Errwrite(s string, args ...any) (error)
-	Errwriteln(s string, args ...any) (error)
-}
-
 type StdLogger struct {}
 
 func (ml *StdLogger) Write(s string, args ...any) (error) {

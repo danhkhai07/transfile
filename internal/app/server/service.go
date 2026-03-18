@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -23,7 +24,7 @@ func (svr *Server) Run(
 	ctx context.Context,
 	args []string,
 	getenv func(string) string,
-) (err error) {
+) {
 	ctx, osCancel := signal.NotifyContext(ctx, os.Interrupt)
 	defer osCancel()
 
@@ -39,6 +40,7 @@ func (svr *Server) Run(
 		err := svr.httpServer.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
 			svr.logger.Errwriteln("error listen and serve: %s", err)
+			log.Fatal(err)
 			return
 		}
 	}()
@@ -55,12 +57,11 @@ func (svr *Server) Run(
 		svr.logger.Writeln("server shutting down...")
 		if err := svr.httpServer.Shutdown(shutdownCtx); err != nil {
 			svr.logger.Errwriteln("error shutting down http server: %s", err)
+			log.Fatal(err)
 			return
 		}
 	}()
 	wg.Wait()
-	
-	return nil
 }
 
 func NewServer(

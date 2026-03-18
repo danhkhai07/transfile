@@ -19,7 +19,5 @@ func main() {
 		&cfg,
 		&logger,
 	)
-	if err := server.Run(ctx, os.Args, os.Getenv); err != nil {
-		os.Exit(1)
-	}
+	server.Run(ctx, os.Args, os.Getenv)
 }

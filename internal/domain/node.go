@@ -10,6 +10,7 @@ var (
 
 type Node struct {
 	Addr string
+	FileName string
 }
 
 func (node *Node) IsValid() (ok bool) {

@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"log"
 	"net"
 	"net/http"
@@ -11,11 +13,17 @@ import (
 	"time"
 
 	"transfile/config"
+	"transfile/internal/cache"
+)
+
+var (
+	ErrInternalError = errors.New("internal error")
 )
 
 type Server struct {
 	addr string
 	logger Logger
+	fileStore *cache.FileStore
 	httpServer *http.Server
 	aliveAt time.Time
 }
@@ -67,10 +75,12 @@ func (svr *Server) Run(
 func NewServer(
 	cfg *config.Config,
 	logger Logger,
+
 ) (*Server) {
 	svr := Server{
 		addr: net.JoinHostPort("0.0.0.0", cfg.Port),
 		logger: logger,
+		fileStore: cache.NewFileStore(),
 		httpServer: &http.Server{},
 	}
 	svr.httpServer.Addr = svr.addr
@@ -105,4 +115,20 @@ func NewHandler(
 
 func (svr *Server) Uptime() int {
 	return int(time.Now().Unix()) - int(svr.aliveAt.Unix())
+}
+
+func (svr *Server) Encode(w http.ResponseWriter, r *http.Request, status int, v any) error {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(status)
+    if err := json.NewEncoder(w).Encode(v); err != nil {
+		return ErrInternalError
+    }
+    return nil
+}
+
+func (svr *Server) Decode(r *http.Request, v any) (error) {
+    if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
+		return ErrInternalError
+    }
+    return nil
 }

@@ -126,8 +126,8 @@ func (svr *Server) Encode(w http.ResponseWriter, r *http.Request, status int, v 
     return nil
 }
 
-func (svr *Server) Decode(r *http.Request, v any) (error) {
-    if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
+func (svr *Server) Decode(r *http.Request, v *any) (error) {
+    if err := json.NewDecoder(r.Body).Decode(v); err != nil {
 		return ErrInternalError
     }
     return nil

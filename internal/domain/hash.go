@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	ErrInvalidHash = errors.New("invalid node")
+	ErrInvalidHash = errors.New("invalid hash")
 )
 
 type Hash string

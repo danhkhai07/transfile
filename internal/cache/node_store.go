@@ -1,10 +1,12 @@
 package cache
 
 import (
-	"hash"
-	"io"
+	"errors"
 	"transfile/internal/domain"
-	"transfile/internal/util"
+)
+
+var (
+	ErrMismatchFileSize = errors.New("mismatch file size while adding")
 )
 
 type FileStore struct {
@@ -36,16 +38,12 @@ func (mcs *FileStore) GetFileSize(hash domain.Hash) (size int64, ok bool) {
 	return size, ok
 }
 
-func (mcs *FileStore) addNode(hash domain.Hash, addr string, filename string) (err error) {
-	node := domain.Node{
-		Addr: addr,
-		FileName: filename,
-	}
+func (mcs *FileStore) addNode(hash domain.Hash, node *domain.Node) (err error) {
 	if !node.IsValid() {
 		return domain.ErrInvalidNode
 	}
 
-	mcs.nodeMap[hash] = append(mcs.nodeMap[hash], node)
+	mcs.nodeMap[hash] = append(mcs.nodeMap[hash], *node)
 	mcs.nodeMapSize += 1
 	return nil
 }
@@ -71,7 +69,16 @@ func (mcs *FileStore) AddFile(
 	if !node.IsValid() {
 		return domain.ErrInvalidNode
 	}
+	if err := mcs.addNode(hash, &node); err != nil{
+		return err
+	}
 
+	_, ok := mcs.sizeMap[hash]
+	if ok && mcs.sizeMap[hash] != size {
+		// mismatch file size
+		return ErrMismatchFileSize
+	}
 	mcs.sizeMap[hash] = size
-	
+
+	return nil
 }

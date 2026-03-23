@@ -21,8 +21,10 @@ var (
 )
 
 type Server struct {
-	addr string
+	cfg *config.ServerConfig
 	logger Logger
+
+	addr string
 	fileStore *cache.FileStore
 	httpServer *http.Server
 	aliveAt time.Time
@@ -73,13 +75,14 @@ func (svr *Server) Run(
 }
 
 func NewServer(
-	cfg *config.Config,
+	cfg *config.ServerConfig,
 	logger Logger,
 
 ) (*Server) {
 	svr := Server{
-		addr: net.JoinHostPort("0.0.0.0", cfg.Port),
+		cfg: cfg,
 		logger: logger,
+		addr: net.JoinHostPort("0.0.0.0", cfg.Port),
 		fileStore: cache.NewFileStore(),
 		httpServer: &http.Server{},
 	}
@@ -97,7 +100,7 @@ func NewServer(
 
 func NewHandler(
 	svr *Server,
-	cfg *config.Config,
+	cfg *config.ServerConfig,
 	logger Logger,
 ) (http.Handler) {
 	mux := http.NewServeMux()

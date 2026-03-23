@@ -1,5 +1,10 @@
 package config
 
-type Config struct {
+type ServerConfig struct {
 	Port string
+}
+
+type ClientConfig struct {
+	Port string
+	ServerAddr string
 }

@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	cfg := config.Config{
+	cfg := config.ServerConfig {
 		Port: "8080",
 	}
 	logger := config.StdLogger{}
